@@ -9,28 +9,24 @@
 " due time, of course.
 "
 
-"+++++++++"
-" OPTIONS "
-"+++++++++"
+" Options
 
-" Number bar coloration.
-highlight LineNr ctermfg=white ctermbg=darkgrey
+"colorscheme murphy
 
 syntax on
 filetype plugin on
 
-set autoindent
+set cursorline
+set cursorcolumn
 
-" Will autowrite when when using :n.
+set autoindent
 set autowrite
 set backspace=indent,eol,start
 set expandtab
 set hidden
 set ignorecase
 set incsearch
-set list
-set listchars=tab:›\ ,trail:•,extends:#,nbsp:.
-set matchpairs+=<:>
+set nolist
 set mouse=a
 set nobackup
 set nocompatible
@@ -38,27 +34,27 @@ set noerrorbells
 set noshiftround
 set noswapfile
 set number relativenumber
-set nuw=6
 set path+=**
-set scrolloff=5
-set shiftwidth=2
+set scrolloff=6
 set showcmd
 set showmatch
 set showmode
 set smartcase
-set softtabstop=2
-set tabstop=2
+
+set shiftwidth=4
+set softtabstop=4
+set tabstop=4
+
 set ttyfast
 set undodir=~/.vim/undodir
 set undofile
 set wildmenu
 set wildmode=longest:full,full
 
+:hi CursorLine   cterm=NONE ctermbg=blue ctermfg=white guibg=blue guifg=white
+:hi CursorColumn cterm=NONE ctermbg=blue ctermfg=white guibg=blue guifg=white
 
 
-"+++++++++++++"
-" Keybindings "
-"+++++++++++++"
 
 " Macros.
 let @f='/<++>4x'
@@ -76,6 +72,8 @@ autocmd FileType php let @x='c<h2></h2>bhhhp/</'
 autocmd FileType php let @v='c<h3></3kbh3>hhhhP'
 autocmd FileType php let @s='c<small></small>bblP'
 
+
+
 " Abbreviations
 iabbrev @@ <++>
 iabbrev !! https://rethy.xyz
@@ -83,13 +81,18 @@ iabbrev ghh https://github.com/rethyxyz
 iabbrev FN Brody
 iabbrev LN Rethy
 
-" General maps (non-leader).
+
+
+" General maps (non-leader)
 nnoremap <F5> :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
 map <F9> :retab <CR> :wq! <CR>
 map ; :
 
-" Leader.
-"" Faster Defaults
+
+
+" Leader
+
+"" Misc abbreviations of default commands.
 map <leader><leader> :Ex<CR>
 map <leader>ftd :filetype detect<CR>
 nmap <leader>vvrc :e ~/.vimrc<CR>
@@ -99,20 +102,21 @@ nmap <leader>wq :wq<CR>
 map <leader>n :next<CR>
 map <leader>pi :PlugInstall<CR>
 
-" Vertical/horizontal splits.
+"" Vertical/horizontal splits.
 map <leader>c :vsplit<CR>
 map <leader>v :split<CR>
 
-" Vertical/horizontal resizing by 5.
+"" Vertical/horizontal resizing by 5.
 map <leader>- :vertical resize -5<CR>
 map <leader>= :vertical resize +5<CR>
 map <leader>]- :resize -5<CR>
 map <leader>]= :resize +5<CR>
 
 map <leader>cc :execute "set colorcolumn=" . (&colorcolumn == "" ? "80" : "")<CR>
+map <leader>cl :set cursorline! cursorcolumn!<CR>
 
-" System commands for inserting time, items in current dir, and date (Y-m-d
-" format).
+"" System commands for inserting time, items in current dir, and date (Y-m-d
+"" format).
 map <leader>date "=system("date +'\%Y-\%m-\%d' \| tr -d '\n'")<CR>P
 map <leader>ls "=system("ls")<CR>P
 map <leader>time "=system("date +'%T' \| tr -d '\n'")<CR>P
@@ -121,8 +125,8 @@ map <leader>off :exe ':silent !firefox % &'<CR>
 
 map <leader>sc :setlocal spell! spelllang=en_us<CR>
 
-" How I get around my website's directory structures. I suggest everyone
-" implements something like this, as it saves a lot of time.
+"" How I get around my website's directory structures. I suggest everyone
+"" implements something like this, as it saves a lot of time.
 map <leader>gree :e ~/Documents/Repositories/rethy.xyz/<CR>
 map <leader>grei :e ~/Documents/Repositories/rethy.xyz/index.php<CR>
 map <leader>grev :e ~/Documents/Repositories/rethy.xyz/visual_media<CR>
@@ -130,25 +134,26 @@ map <leader>grevi :e ~/Documents/Repositories/rethy.xyz/visual_media/index.php<C
 
 
 
+" Automation
 
-"++++++++++++"
-" Automation "
-"++++++++++++"
-
-autocmd BufWritePre * %s/\s\+$//e
-autocmd BufWritePost config.h,config.def.h !sudo make clean install
 autocmd BufEnter * silent! :lcd%:p:h
-autocmd BufWinLeave *.* mkview
-autocmd BufWinEnter *.* silent loadview"
+
+"" Before writing to buffer, clear whitespace at end of lines.
+autocmd BufWritePre * %s/\s\+$//e
+
+"" Start preview server when entering markdown file.
+autocmd BufWinEnter *.md :MarkdownPreview
+
+"" Compile suckless configs when closing buffer.
+autocmd BufWinLeave config.h,config.def.h !sudo make clean install
 
 
 
-"++++++++++++++++++++"
-" Internal Variables "
-"++++++++++++++++++++"
+" Internal Variables
 
 let g:livepreview_previewer = 'zathura'
 let g:airline_theme = 'lessnoise'
+let g:vimwiki_list = [{'path': '~/Documents/Notes/', 'syntax': 'markdown', 'ext': '.md'}]
 
 call plug#begin()
     " Multiple cursor isn't necessary, but really helpful when doing quick
@@ -160,4 +165,10 @@ call plug#begin()
 
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
+
+    " Wikipedia like note organization.
+    Plug 'vimwiki/vimwiki'
+
+    " I think this is actually for nvim, but it seems to work so far.
+    Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 call plug#end()

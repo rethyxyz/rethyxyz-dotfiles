@@ -50,8 +50,8 @@ alias gmm="cd ~/Music"
 
 # Notes directory.
 alias gnn="cd ~/Documents/Notes"
-alias vnt="vim ~/Documents/Notes/TODO"
-alias vns="vim ~/Documents/Notes/Scratchpad"
+alias vnt="vim ~/Documents/Notes/TODO.md"
+alias vns="vim ~/Documents/Notes/Scratchpad.md"
 
 # Books directory.
 alias gbb="cd ~/Documents/Books"
@@ -70,7 +70,7 @@ alias gD="cd ~/Documents/Repositories/dotfiles/"
 alias gS="cd ~/Documents/Repositories/scripts/"
 alias gez="cd ~/Documents/Repositories/ezrecipe.xyz/"
 alias gh4="cd ~/Documents/Repositories/4chan-scraper/"
-alias ghM="cd ~/Documents/Repositories/moses.rat/"
+alias ghm="cd ~/Documents/Repositories/moses.rat/"
 alias ghd="cd ~/Documents/Repositories/dwmbar/"
 alias ghr="cd ~/Documents/Repositories/rb/"
 alias ghs="cd ~/Documents/Repositories/RIS/"
@@ -142,6 +142,7 @@ alias vxi="vim ~/.xinitrc"
 
 # Vim
 alias vvrc="vim ~/.vimrc"
+alias gVV="cd ~/.vim/"
 
 alias vqb="vim ~/.config/qutebrowser/quickmarks"
 alias gcq="cd ~/.config/qutebrowser/"
@@ -183,10 +184,10 @@ alias rm="rb.sh"
 alias RM="/usr/bin/rm"
 
 # SSH
-alias mso="sudo sshfs -o cache=yes -p PORT -o allow_other brody@192.168.1.110:/home/brody/ /mnt/"
-alias mdi="sudo sshfs -o cache=yes -p PORT -o allow_other brody@192.168.1.105:/home/brody/ /mnt/"
-alias sshso="ssh -X -p PORT brody@192.168.1.110"
-alias sshdi="ssh -X -p PORT brody@192.168.1.105"
-alias sshre="ssh -p PORT root@rethy.xyz"
+alias mso="sudo sshfs -o cache=yes -o allow_other brody@192.168.1.110:/home/brody/ /mnt/"
+alias mdi="sudo sshfs -o cache=yes -o allow_other brody@192.168.1.105:/home/brody/ /mnt/"
+alias sshso="ssh -X brody@192.168.1.110"
+alias sshdi="ssh -X brody@192.168.1.105"
+alias sshre="ssh root@rethy.xyz"
 alias ume5="sudo umount -f /mnt/"
 alias umtw="sudo umount -f /mnt/"
